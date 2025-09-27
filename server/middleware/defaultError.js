@@ -6,6 +6,7 @@ const defaultError = (err, req, res, next) => {
   res.status(statusCode).json({
     status: false,
     message,
+    errors: err.errors || null,
   });
 };
 

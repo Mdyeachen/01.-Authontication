@@ -3,6 +3,7 @@ const express = require("express");
 const connectDB = require("./db/connect");
 const { notFound, defaultError } = require("./middleware");
 const userRouter = require("./routers/user.router");
+const sendMail = require("./sendMail/mailSender");
 
 // app initialization
 const app = express();

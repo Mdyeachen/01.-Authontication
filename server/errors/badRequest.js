@@ -2,8 +2,8 @@ const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 const CustomError = require("./customError");
 
 class BadRequest extends CustomError {
-  constructor(message) {
-    super(message || ReasonPhrases.BAD_REQUEST, StatusCodes.BAD_REQUEST);
+  constructor(message, error = null) {
+    super(message || ReasonPhrases.BAD_REQUEST, StatusCodes.BAD_REQUEST, error);
   }
 }
 
