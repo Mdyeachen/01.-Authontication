@@ -14,6 +14,11 @@ app.use(express.json());
 
 // routes
 app.get("/", (req, res) => {
+  sendMail(
+    "sultanasaria45@gmail.com, arshakhan320@gmail.com",
+    "Test Message",
+    "242345"
+  );
   res.send("Hello World!");
 });
 
