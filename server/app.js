@@ -5,6 +5,8 @@ const { notFound, defaultError } = require("./middleware");
 const userRouter = require("./routers/user.router");
 const sendMail = require("./sendMail/mailSender");
 
+// const crypto = require("crypto");
+
 // app initialization
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,11 +16,16 @@ app.use(express.json());
 
 // routes
 app.get("/", (req, res) => {
-  sendMail(
-    "sultanasaria45@gmail.com, arshakhan320@gmail.com",
-    "Test Message",
-    "242345"
-  );
+  // sendMail(
+  //   "sultanasaria45@gmail.com, arshakhan320@gmail.com",
+  //   "Test Message",
+  //   "242345"
+  // );
+
+  // generate a secryt key using crypto
+  // const secretBase64 = crypto.randomBytes(64).toString("base64");
+  // console.log(secretBase64);
+
   res.send("Hello World!");
 });
 

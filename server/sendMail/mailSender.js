@@ -1,5 +1,9 @@
-require("dotenv").config();
+const { CustomError } = require("../errors");
+const { StatusCodes } = require("http-status-codes");
 const nodemailer = require("nodemailer");
+const fs = require("fs");
+const path = require("path");
+const { log } = require("console");
 
 const USER_EMAIL = process.env.USER_EMAIL;
 const USER_PASSWORD = process.env.USER_PASSWORD;
@@ -14,8 +18,25 @@ const transporter = nodemailer.createTransport({
 });
 
 // function to send mail
-const sendMail = async (to, subject, code) => {
-  const html = code;
+const sendMail = async (to, emailtype, subject, code) => {
+  const emailType = emailtype;
+
+  // load the html file here
+  const templatePath = path.join(__dirname, "authEmails", `${emailType}.html`);
+
+  console.log(templatePath);
+
+  if (!fs.existsSync(templatePath)) {
+    console.log("error here");
+    throw new CustomError(
+      `Email template not found: ${templatePath}`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+
+  let html = fs.readFileSync(templatePath, "utf8");
+  html = html.replace(/{{CODE}}/g, code);
+
   try {
     const info = await transporter.sendMail({
       from: USER_EMAIL,

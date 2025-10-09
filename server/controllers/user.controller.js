@@ -3,6 +3,8 @@ const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 const { asyncWrap } = require("../middleware");
 const { BadRequest } = require("../errors");
 const User = require("../models/user.model");
+const { generateTokenAndSetCookies } = require("../utils");
+const sendMail = require("../sendMail/mailSender");
 
 // login controller function
 const login = asyncWrap(async (req, res) => {
@@ -18,8 +20,6 @@ const logout = asyncWrap(async (req, res) => {
 const signup = asyncWrap(async (req, res) => {
   // extract user details from request body
   const { username, email, password, name } = req.body;
-
-  console.log({ username, email, password, name });
 
   // user existence check
   const userExisted = await User.findOne({
@@ -49,17 +49,62 @@ const signup = asyncWrap(async (req, res) => {
     verificationToken,
     verificationTokenExpire,
   };
+
+  // send the varification token here
+  await sendMail(
+    userData.email,
+    "verify",
+    "verification Token",
+    userData.verificationToken
+  );
+
   const user = await User.create(userData);
+
+  // generate jwttoken and set cookies
+  generateTokenAndSetCookies(res, user._id, user.username);
 
   // respond with success message and user details
   res.status(StatusCodes.CREATED).json({
     status: "success",
     message: ReasonPhrases.CREATED,
     user: {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      name: user.name,
+      ...user._doc,
+      password: undefined,
+    },
+  });
+});
+const verifyEmail = asyncWrap(async (req, res) => {
+  const { code } = req.body;
+
+  // find user by verification token
+  const user = await User.findOne({
+    verificationToken: code,
+    verificationTokenExpire: { $gt: Date.now() },
+  });
+
+  // if user not found or token expired
+  if (!user) {
+    throw new BadRequest("Verification code is invalid or expired");
+  }
+
+  // update user verification status
+  user.verificationToken = undefined;
+  user.verificationTokenExpire = undefined;
+  user.isVarifed = true;
+  await user.save();
+
+  // send confirmation email (await ensures error handling)
+  await sendMail(user.email, "success", "Confirmation Message");
+
+  // send response
+  res.status(StatusCodes.ACCEPTED).json({
+    status: "success",
+    message: "Verification successful",
+    user: {
+      ...user._doc,
+      password: undefined,
+      verificationToken: undefined,
+      verificationTokenExpire: undefined,
     },
   });
 });
@@ -69,4 +114,5 @@ module.exports = {
   login,
   logout,
   signup,
+  verifyEmail,
 };
