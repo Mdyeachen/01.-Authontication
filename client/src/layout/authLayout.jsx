@@ -1,5 +1,6 @@
 import React from "react";
-import RoundShape from "./utils/RoundShape";
+import { Outlet } from "react-router-dom";
+import RoundShape from "../utils/RoundShape";
 
 const AuthLayout = () => {
   return (
@@ -11,7 +12,7 @@ const AuthLayout = () => {
           delay="0"
         />
 
-        {/* <RoundShape
+        <RoundShape
           size="h-[5rem] w-[5rem]"
           position="top-50% -left-5"
           delay="20"
@@ -21,7 +22,9 @@ const AuthLayout = () => {
           size="h-[20rem] w-[20rem]"
           position="bottom-40 right-100"
           delay="0"
-        /> */}
+        />
+
+        <Outlet />
       </div>
     </>
   );
