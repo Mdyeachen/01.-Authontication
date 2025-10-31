@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import Input from "../component/input";
+import PasswordMeter from "../component/PasswordMeter"
 import { CiUser } from "react-icons/ci";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -45,6 +46,9 @@ const SignUp: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+
+        <PasswordMeter password={password} />
+
         <motion.button
           className="bg-radial from-gray-800 to-gray-950 w-full text-white font-bold text-center rounded p-3 cursor-pointer focus:outline-0 focus:ring-2 focus:ring-green-700 mt-2"
           type="submit"
