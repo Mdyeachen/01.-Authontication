@@ -15,7 +15,15 @@ const SignUp: React.FC = () => {
   const [password, setPassword] = useState<string>("");
 
   return (
-    <section className="bg-white p-12 rounded shadow-md w-full max-w-md">
+    <motion.section 
+    className="bg-white p-12 rounded shadow-md w-full max-w-md"
+    initial={{ opacity: 0, y : 10}}
+    animate={{ opacity: 1, y: 1 }}
+    transition={{
+      duration: .8,
+      ease: "easeInOut"
+    }}
+    >
       <h2 className="text-center font-bold text-4xl">Create Account</h2>
       <form className="space-y-6 mt-12">
         <Input
@@ -70,7 +78,7 @@ const SignUp: React.FC = () => {
           </Link>
         </p>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
