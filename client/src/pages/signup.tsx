@@ -7,12 +7,19 @@ import { CiUser } from "react-icons/ci";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
+import { RxReload } from "react-icons/rx";
 
 const SignUp: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const isLoading = false;
+
+  // handle sign up function
+  const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  }
 
   return (
     <motion.section 
@@ -25,7 +32,7 @@ const SignUp: React.FC = () => {
     }}
     >
       <h2 className="text-center font-bold text-4xl">Create Account</h2>
-      <form className="space-y-6 mt-12">
+      <form className="space-y-6 mt-12" onSubmit={handleSignUp}>
         <Input
           icon={MdOutlineDriveFileRenameOutline}
           placeholder="Full Name"
@@ -62,8 +69,9 @@ const SignUp: React.FC = () => {
           type="submit"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
+          disabled={isLoading}
         >
-          Sign Up
+          {isLoading ? <RxReload className="mx-auto animate-spin"/> : "Sign Up"}
         </motion.button>
       </form>
 
