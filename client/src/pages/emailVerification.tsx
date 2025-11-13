@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Link} from "react-router-dom";
 import { TbLoader } from "react-icons/tb";
 
 const EmailVarification: React.FC = () => {
@@ -79,10 +80,17 @@ const EmailVarification: React.FC = () => {
   };
 
   // handle Submit function
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
     setIsLoading(true);
   };
+
+  useEffect(() => {
+    if(code.every(c => c !== "")) {
+      console.log("Good to Go");
+      handleSubmit();
+    }      
+  }, [code]) 
 
   return (
     <motion.section
@@ -95,7 +103,8 @@ const EmailVarification: React.FC = () => {
       }}
     >
       <h1 className="text-4xl font-bold text-center">Verify Your Email</h1>
-      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+      <p className="mt-5 text-sm font-light text-gray-600 text-center">Please enter the 6-digit code sent to your email.</p>
+      <form className="my-8 space-y-6" onSubmit={handleSubmit}>
         <div className="flex justify-center gap-3">
           {code.map((_, index) => (
             <input
@@ -131,6 +140,17 @@ const EmailVarification: React.FC = () => {
           )}
         </motion.button>
       </form>
+      <div className="mt-8 text-center">
+        <p className="text-gray-700 text-sm">
+          Don't get the code.{" "}
+          <Link
+            to="/"
+            className="text-green-900 font-bold italic hover:underline transition duration-100"
+          >
+            Send Again
+          </Link>
+        </p>
+      </div>
     </motion.section>
   );
 };
