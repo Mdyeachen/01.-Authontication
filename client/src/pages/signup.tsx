@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { authStore } from "../store/authStore"
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import Input from "../component/input";
 import PasswordMeter from "../component/PasswordMeter"
@@ -14,11 +15,20 @@ const SignUp: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const isLoading = false;
+  const { error, isLoading, signup } = authStore();
+  const navigate = useNavigate()
 
   // handle sign up function
-  const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    try {
+      await signup(name, username, email, password);
+      navigate("/email-verify")
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 
   return (
@@ -73,6 +83,9 @@ const SignUp: React.FC = () => {
         >
           {isLoading ? <RxReload className="mx-auto animate-spin"/> : "Sign Up"}
         </motion.button>
+        {error && 
+        <p className="text-red-400 italic animate-pulse text-center text-sm">{error}</p>
+        }
       </form>
 
       <div className="mt-8 text-center">
