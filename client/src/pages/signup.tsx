@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { authStore } from "../store/authStore"
+import authStore from "../store/authStore.ts"
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import Input from "../component/input";
@@ -15,7 +15,7 @@ const SignUp: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { error, isLoading, signup } = authStore();
+  const { error, isLoading, signUp } = authStore();
   const navigate = useNavigate()
 
   // handle sign up function
@@ -23,7 +23,7 @@ const SignUp: React.FC = () => {
     e.preventDefault();
 
     try {
-      await signup(name, username, email, password);
+      await signUp(username, name, email, password);
       navigate("/email-verify")
     } catch (error) {
       console.log(error);

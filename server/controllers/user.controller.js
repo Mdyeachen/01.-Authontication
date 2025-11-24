@@ -71,14 +71,16 @@ const logout = asyncWrap(async (req, res) => {
 const signup = asyncWrap(async (req, res) => {
   // extract user details from request body
   const { username, email, password, name } = req.body;
-
+  console.log("Hello Word");
+  console.log(username, email, password, name);
+  
   // user existence check
   const userExisted = await User.findOne({
     $or: [{ email }, { username }],
   }).lean();
   // if user exists, throw an error
   if (userExisted) {
-    throw new BadRequest("User already exists");
+    return new BadRequest("User already exists");
   }
 
   // hash the password before saving

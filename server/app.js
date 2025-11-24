@@ -4,12 +4,18 @@ const connectDB = require("./db/connect");
 const { notFound, defaultError } = require("./middleware");
 const userRouter = require("./routers/user.router");
 const cookieParser = require("cookie-parser");
+const cors = require('cors');
 
 // const crypto = require("crypto");
 
 // app initialization
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(cors({
+  origin: 'http://localhost:3000', // frontend URL
+  credentials: true, // allow cookies to be sent
+}))
 
 // middleware
 app.use(express.json());
