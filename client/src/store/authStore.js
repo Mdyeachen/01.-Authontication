@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
+import { response } from "express";
 
 const url = "http://localhost:5000/api/v1/users/";
 
@@ -24,10 +25,8 @@ export const authStore = create((set) => ({
 
       set({ user: res.data.user, isAuthenticated: true, isLoading: false });
     } catch (error) {
-      console.log(error);
-
       set({
-        error: error?.response?.data.message || "Error to Sign Up",
+        error: error?.response?.data || "Error to Sign Up",
         isLoading: false,
       });
       throw error;

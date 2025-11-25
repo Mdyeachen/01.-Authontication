@@ -16,7 +16,7 @@ interface authStore {
   isAuthenticated: boolean;
   isCheckingAuth: boolean;
 
-  signUp: (
+  signup: (
     username: string,
     name: string,
     email: string,
@@ -33,7 +33,7 @@ const authStore = create<authStore>((set) => ({
   isAuthenticated: false,
   isCheckingAuth: true,
 
-  signUp: async (username, name, email, password) => {
+  signup: async (username, name, email, password) => {
     set({ isLoading: true });
     try {
       const response = await axios.post(`${url}/signup`, {
@@ -48,7 +48,7 @@ const authStore = create<authStore>((set) => ({
         isAuthenticated: true,
       });
     } catch (error: unknown) {
-      console.log(error);
+
       if (axios.isAxiosError(error)) {
         set({
           user: null,
@@ -64,6 +64,7 @@ const authStore = create<authStore>((set) => ({
           isAuthenticated: false,
         });
       }
+      throw error;
     }
   },
 }));
