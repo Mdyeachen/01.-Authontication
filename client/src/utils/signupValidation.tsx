@@ -15,13 +15,13 @@ return "";
 };
 
 export const validatePassword = (password: string) => {
-if (!password) return "Password is required";
-if (password.length < 6 || password.length > 20)
-return "Password must be 6–20 characters";
-const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%&*?])/;
-if (!strongPassword.test(password))
-return "Password must have uppercase, lowercase, number & special character";
-return "";
+    if(!password) return "Password is Required";
+    if(password.length < 6 || password.length > 20 )
+        return "Password Must be between 6 and 20 characters Long"
+    const strongPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%&*?])[A-Za-z\d!@#$%&*?]{6,20}$/ ;
+    if(!strongPass.test(password))
+        return "Password must include at least one uppercase letter, one lowercase letter, one number, and one special [! @ # $ % & * ?] character "
+    return "";
 };
 
 export const validateName = (name: string) => {
